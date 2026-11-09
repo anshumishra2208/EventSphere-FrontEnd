@@ -3,6 +3,7 @@ import Navbar from "./components/Navbar"
 import Footer from "./components/Footer"
 import { House } from "lucide-react"
 import NotFound from "./pages/NotFound"
+import HomePage from "./pages/HomePage"
 
 
 
@@ -11,11 +12,10 @@ function App() {
 
   return (
     <div>
-      <House/>
       <Navbar />
       <Routes>
 
-        <Route path="/" element={<h1>Home</h1>}/>
+        <Route path="/" element={<HomePage/>}/>
         <Route path="*" element={<NotFound/>}/>
 
       </Routes>
