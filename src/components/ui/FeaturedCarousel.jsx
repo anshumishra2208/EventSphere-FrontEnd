@@ -16,7 +16,7 @@ import { Badge } from "./badge";
 
 function FeaturedCarousel({ events }) {
   const [emblaRef, emblaApi] = useEmblaCarousel({ loop: true }, [
-    Autoplay({ delay: 4000, stopOnInteraction: true  , stopOnMouseEnter : true}),
+    Autoplay({ delay: 3000, stopOnInteraction: true }),
   ]);
 
   const goToPrev = () => emblaApi?.scrollPrev();
