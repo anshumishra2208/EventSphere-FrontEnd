@@ -1,8 +1,8 @@
-import React, { useCallback, useEffect } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import useEmblaCarousel from "embla-carousel-react";
 import Autoplay from "embla-carousel-autoplay";
-import { Button } from "./button";
 
+import { Button } from "./button";
 import {
   ArrowRight,
   Calendar,
@@ -14,17 +14,37 @@ import {
 import { Link } from "react-router";
 import { Badge } from "./badge";
 
+import { formatEventDate, formatPrice } from "@/lib/utils";
+
 function FeaturedCarousel({ events }) {
+  const [selectedIndex, setSelectedIndex] = useState(0);
   const [emblaRef, emblaApi] = useEmblaCarousel({ loop: true }, [
-    Autoplay({ delay: 3000, stopOnInteraction: true }),
+    Autoplay({
+      delay: 3000,
+      stopOnInteraction: false,
+      stopOnMouseEnter: true,
+      rootNode: (emblaRoot) => emblaRoot.parentElement,
+    }),
   ]);
 
-  const goToPrev = () => emblaApi?.scrollPrev();
-  const goToNext = () => emblaApi?.scrollNext();
+  const goToPrev = () => {
+    emblaApi?.scrollPrev();
+    emblaApi.plugins().autoplay.reset();
+  };
+  const goToNext = () => {
+    emblaApi?.scrollNext();
+    emblaApi.plugins().autoplay.reset();
+  };
+
+  const scrollTo = (i) => {
+    emblaApi.scrollTo(i);
+  };
 
   useEffect(() => {
     if (!emblaApi) return;
-    emblaApi.plugins().autoplay?.play();
+    emblaApi.on("select", () =>
+      setSelectedIndex(emblaApi.selectedScrollSnap()),
+    );
   }, [emblaApi]);
   return (
     <div className="relative group">
@@ -37,19 +57,16 @@ function FeaturedCarousel({ events }) {
                 key={eventId}
                 className="flex-[0_0_100%] min-w-0 relative aspect-video md:aspect-21/9 lg:aspect-24/9 max-h-125"
               >
-                {/* Background Image with warm rich gradient overlay */}
                 <div className="absolute inset-0 bg-[#161513]">
                   <img
                     src={event.image}
                     alt={event.title}
                     className="w-full h-full object-cover opacity-60 mix-blend-luminosity filter brightness-95"
                   />
-                  {/* Subtle editorial warm gradient */}
                   <div className="absolute inset-0 bg-linear-to-t from-[#141312] via-[#141312]/60 to-transparent" />
                   <div className="absolute inset-0 bg-linear-to-r from-[#141312] via-[#141312]/80 to-transparent" />
                 </div>
 
-                {/* Content Overlay */}
                 <div className="relative h-full flex flex-col justify-end p-6 sm:p-10 lg:p-12 text-white max-w-3xl z-10">
                   <div className="space-y-3">
                     <div className="flex items-center gap-2 flex-wrap">
@@ -90,16 +107,14 @@ function FeaturedCarousel({ events }) {
                     <div className="flex items-center gap-5 pt-2 text-xs sm:text-sm text-stone-300 font-medium flex-wrap">
                       <span className="flex items-center gap-1.5 text-orange-300 font-semibold">
                         <Calendar className="w-4 h-4" />
-                        {/* {formatEventDate(event.startDate)} */}
-                        {event.startDate}
+                        {formatEventDate(event.startDate)}
                       </span>
                       <span className="flex items-center gap-1.5 text-stone-300">
                         <MapPin className="w-4 h-4 text-stone-400" />
                         {event.venue}, {event.city}
                       </span>
                       <span className="flex items-center gap-1.5 font-bold text-white bg-white/10 px-2.5 py-1 rounded-lg border border-white/10">
-                        {/* {formatPrice(event.price, event.currency)} */}
-                        {event.price}
+                        {formatPrice(event.price, event.currency)}
                       </span>
                     </div>
 
@@ -146,6 +161,20 @@ function FeaturedCarousel({ events }) {
       >
         <ChevronRight className="w-6 h-6" />
       </button>
+
+      <div className="absolute bottom-4 right-6 flex items-center gap-2 z-20">
+        {events.map((_, i) => (
+          <button
+            key={i}
+            onClick={() => scrollTo(i)}
+            className={`transition-all rounded-full ${
+              i === selectedIndex
+                ? "w-6 h-2 bg-[#E65100]"
+                : "w-2 h-2 bg-white/50 hover:bg-white/80"
+            }`}
+          />
+        ))}
+      </div>
     </div>
   );
 }
