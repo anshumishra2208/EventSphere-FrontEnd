@@ -1,4 +1,4 @@
-import { Briefcase, ChevronRight, Compass, Cpu, Flame, GraduationCap, Music, Palette, Sparkles, Tag, Trophy } from 'lucide-react'
+import { Briefcase, ChevronRight, Compass, Cpu, Flame, GraduationCap, Map, MapIcon, MapPin, Music, Palette, Sparkles, Tag, Trophy } from 'lucide-react'
 import React, { useEffect, useState } from 'react'
 import { Link } from 'react-router'
 import { Button } from '../components/ui/button'
@@ -67,14 +67,35 @@ function getCategoryColor(i) {
     return colors[i];
 }
 
+const HUB_CITIES = [
+    {
+        name: "Bengaluru",
+        label: "Tech & Acoustic Nights",
+        img: "https://images.unsplash.com/photo-1596176530529-78163a4f7af2?auto=format&fit=crop&w=500&q=80",
+    },
+    {
+        name: "Mumbai",
+        label: "Indie Festivals & Art",
+        img: "https://images.unsplash.com/photo-1570168007204-dfb528c6958f?auto=format&fit=crop&w=500&q=80",
+    },
+    {
+        name: "Delhi NCR",
+        label: "Conclaves & Founder Pitch",
+        img: "https://images.unsplash.com/photo-1587474260584-136574528ed5?auto=format&fit=crop&w=500&q=80",
+    },
+    {
+        name: "Pune",
+        label: "Heritage & Code Labs",
+        img: "https://images.unsplash.com/photo-1627916607164-7b20241db935?auto=format&fit=crop&w=500&q=80",
+    },
+];
+
 function HomePage() {
 
-
-
     const [isLoading, setIsLoading] = useState(false);
-
     const [featuredEvents, setFeaturedEvents] = useState([]);
     const [categories, setCategories] = useState([]);
+    const [trendingEvents, setTrendingEvents] = useState([]);
 
     useEffect(() => {
         setIsLoading(true)
@@ -91,6 +112,14 @@ function HomePage() {
             try {
                 let { data: { data } } = await axios.get("https://eventsphere-server-mfdb.onrender.com/api/categories");
                 setCategories(data);
+
+            } catch (error) {
+
+            }
+
+            try {
+                let { data: { data } } = await axios.get("https://eventsphere-server-mfdb.onrender.com/api/events?limit=8&sort=startDate&order=asc");
+                setTrendingEvents(data);
 
             } catch (error) {
 
@@ -173,6 +202,211 @@ function HomePage() {
                 )}
             </section>
 
+            {/* Upcoming Gatherings Grid */}
+      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-6">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-2 border-b border-[#EBE8DF]">
+          <div>
+            <h2 className="text-xl sm:text-2xl font-bold text-stone-900 tracking-tight">
+              Upcoming Gatherings
+            </h2>
+            <p className="text-xs text-stone-500">
+              Verified community events happening in the coming days
+            </p>
+          </div>
+          <Link
+            to="/explore"
+            className="inline-flex items-center justify-center gap-1.5 whitespace-nowrap px-3 py-1.5 text-xs rounded-lg font-medium border border-[#CCC8BA] bg-transparent hover:bg-[#F2F1EC] text-[#222]"
+          >
+            <span>View All Events</span>
+            <span>→</span>
+          </Link>
+        </div>
+
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+          {/* Card 1 */}
+
+          {
+            trendingEvents.map((e)=>{
+                
+            })
+          }
+          <Link
+            to="/events/next-gen-react-summit"
+            className="group bg-white rounded-2xl border border-[#EAE7DC] overflow-hidden flex flex-col justify-between shadow-[0_2px_8px_-2px_rgba(0,0,0,0.04)] hover:shadow-[0_12px_24px_-8px_rgba(0,0,0,0.08)] hover:border-[#D5D0C2] hover:-translate-y-0.5 transition-all duration-300"
+          >
+            <div>
+              <div className="relative aspect-16/10 overflow-hidden bg-stone-100">
+                <img
+                  src="https://images.unsplash.com/photo-1540575467063-178a50c2df87?auto=format&fit=crop&w=800&q=80"
+                  alt="Next-Gen React & Server Components Summit"
+                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 ease-out"
+                />
+                <div className="absolute top-3 left-3 right-3 flex items-center justify-between pointer-events-none">
+                  <span className="px-2.5 py-1 rounded-full text-[11px] font-medium bg-black/70 text-white backdrop-blur-md shadow-sm">
+                    Technology & AI
+                  </span>
+                  <button
+                    type="button"
+                    className="pointer-events-auto w-8 h-8 rounded-full bg-white/90 backdrop-blur-md shadow-sm border border-black/5 flex items-center justify-center text-stone-700 text-xs"
+                  >
+                    <span>🔖</span>
+                  </button>
+                </div>
+              </div>
+
+              <div className="p-4 space-y-2">
+                <div className="flex items-center gap-2 text-xs font-semibold text-[#C2410C]">
+                  <span>📅</span>
+                  <span>Sat, Nov 15, 2026</span>
+                  <span className="text-stone-300 font-normal">•</span>
+                  <span className="text-stone-500 font-normal truncate">Bengaluru</span>
+                </div>
+                <h3 className="font-bold text-base text-[#111] leading-snug line-clamp-2 group-hover:text-[#E65100] transition-colors">
+                  Next-Gen React & Server Components Summit
+                </h3>
+              </div>
+            </div>
+
+            <div className="px-4 pb-4 pt-3 border-t border-[#F2EFE8] flex items-center justify-between text-xs mt-1">
+              <span className="capitalize text-stone-500 font-medium">In-Person</span>
+              <span className="text-sm font-bold text-stone-900">₹1,499</span>
+            </div>
+          </Link>
+
+          {/* Card 2 */}
+          <Link
+            to="/events/acoustic-sunset-indie-showcase"
+            className="group bg-white rounded-2xl border border-[#EAE7DC] overflow-hidden flex flex-col justify-between shadow-[0_2px_8px_-2px_rgba(0,0,0,0.04)] hover:shadow-[0_12px_24px_-8px_rgba(0,0,0,0.08)] hover:border-[#D5D0C2] hover:-translate-y-0.5 transition-all duration-300"
+          >
+            <div>
+              <div className="relative aspect-16/10 overflow-hidden bg-stone-100">
+                <img
+                  src="https://images.unsplash.com/photo-1514525253161-7a46d19cd819?auto=format&fit=crop&w=800&q=80"
+                  alt="Acoustic Sunset Indie Showcase"
+                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 ease-out"
+                />
+                <div className="absolute top-3 left-3 right-3 flex items-center justify-between pointer-events-none">
+                  <span className="px-2.5 py-1 rounded-full text-[11px] font-medium bg-black/70 text-white backdrop-blur-md shadow-sm">
+                    Live Music
+                  </span>
+                  <button
+                    type="button"
+                    className="pointer-events-auto w-8 h-8 rounded-full bg-white/90 backdrop-blur-md shadow-sm border border-black/5 flex items-center justify-center text-stone-700 text-xs"
+                  >
+                    <span>🔖</span>
+                  </button>
+                </div>
+              </div>
+
+              <div className="p-4 space-y-2">
+                <div className="flex items-center gap-2 text-xs font-semibold text-[#C2410C]">
+                  <span>📅</span>
+                  <span>Fri, Nov 22, 2026</span>
+                  <span className="text-stone-300 font-normal">•</span>
+                  <span className="text-stone-500 font-normal truncate">Mumbai</span>
+                </div>
+                <h3 className="font-bold text-base text-[#111] leading-snug line-clamp-2 group-hover:text-[#E65100] transition-colors">
+                  Acoustic Sunset Indie Showcase
+                </h3>
+              </div>
+            </div>
+
+            <div className="px-4 pb-4 pt-3 border-t border-[#F2EFE8] flex items-center justify-between text-xs mt-1">
+              <span className="capitalize text-stone-500 font-medium">In-Person</span>
+              <span className="text-sm font-bold text-stone-900">₹799</span>
+            </div>
+          </Link>
+
+          {/* Card 3 */}
+          <Link
+            to="/events/founders-angel-pitch-conclave"
+            className="group bg-white rounded-2xl border border-[#EAE7DC] overflow-hidden flex flex-col justify-between shadow-[0_2px_8px_-2px_rgba(0,0,0,0.04)] hover:shadow-[0_12px_24px_-8px_rgba(0,0,0,0.08)] hover:border-[#D5D0C2] hover:-translate-y-0.5 transition-all duration-300"
+          >
+            <div>
+              <div className="relative aspect-16/10 overflow-hidden bg-stone-100">
+                <img
+                  src="https://images.unsplash.com/photo-1475721027785-f74eccf877e2?auto=format&fit=crop&w=800&q=80"
+                  alt="Founders & Angel Pitch Conclave"
+                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 ease-out"
+                />
+                <div className="absolute top-3 left-3 right-3 flex items-center justify-between pointer-events-none">
+                  <span className="px-2.5 py-1 rounded-full text-[11px] font-medium bg-black/70 text-white backdrop-blur-md shadow-sm">
+                    Startups & VC
+                  </span>
+                  <button
+                    type="button"
+                    className="pointer-events-auto w-8 h-8 rounded-full bg-white/90 backdrop-blur-md shadow-sm border border-black/5 flex items-center justify-center text-stone-700 text-xs"
+                  >
+                    <span>🔖</span>
+                  </button>
+                </div>
+              </div>
+
+              <div className="p-4 space-y-2">
+                <div className="flex items-center gap-2 text-xs font-semibold text-[#C2410C]">
+                  <span>📅</span>
+                  <span>Sat, Dec 05, 2026</span>
+                  <span className="text-stone-300 font-normal">•</span>
+                  <span className="text-stone-500 font-normal truncate">Delhi NCR</span>
+                </div>
+                <h3 className="font-bold text-base text-[#111] leading-snug line-clamp-2 group-hover:text-[#E65100] transition-colors">
+                  Founders & Angel Pitch Conclave
+                </h3>
+              </div>
+            </div>
+
+            <div className="px-4 pb-4 pt-3 border-t border-[#F2EFE8] flex items-center justify-between text-xs mt-1">
+              <span className="capitalize text-stone-500 font-medium">Hybrid</span>
+              <span className="text-sm font-bold text-stone-900">Free</span>
+            </div>
+          </Link>
+
+          {/* Card 4 */}
+          <Link
+            to="/events/pottery-ceramic-studio-retreat"
+            className="group bg-white rounded-2xl border border-[#EAE7DC] overflow-hidden flex flex-col justify-between shadow-[0_2px_8px_-2px_rgba(0,0,0,0.04)] hover:shadow-[0_12px_24px_-8px_rgba(0,0,0,0.08)] hover:border-[#D5D0C2] hover:-translate-y-0.5 transition-all duration-300"
+          >
+            <div>
+              <div className="relative aspect-16/10 overflow-hidden bg-stone-100">
+                <img
+                  src="https://images.unsplash.com/photo-1513364776144-60967b0f800f?auto=format&fit=crop&w=800&q=80"
+                  alt="Pottery & Ceramic Studio Retreat"
+                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 ease-out"
+                />
+                <div className="absolute top-3 left-3 right-3 flex items-center justify-between pointer-events-none">
+                  <span className="px-2.5 py-1 rounded-full text-[11px] font-medium bg-black/70 text-white backdrop-blur-md shadow-sm">
+                    Arts & Culture
+                  </span>
+                  <button
+                    type="button"
+                    className="pointer-events-auto w-8 h-8 rounded-full bg-white/90 backdrop-blur-md shadow-sm border border-black/5 flex items-center justify-center text-stone-700 text-xs"
+                  >
+                    <span>🔖</span>
+                  </button>
+                </div>
+              </div>
+
+              <div className="p-4 space-y-2">
+                <div className="flex items-center gap-2 text-xs font-semibold text-[#C2410C]">
+                  <span>📅</span>
+                  <span>Sun, Dec 13, 2026</span>
+                  <span className="text-stone-300 font-normal">•</span>
+                  <span className="text-stone-500 font-normal truncate">Jaipur</span>
+                </div>
+                <h3 className="font-bold text-base text-[#111] leading-snug line-clamp-2 group-hover:text-[#E65100] transition-colors">
+                  Pottery & Ceramic Studio Retreat
+                </h3>
+              </div>
+            </div>
+
+            <div className="px-4 pb-4 pt-3 border-t border-[#F2EFE8] flex items-center justify-between text-xs mt-1">
+              <span className="capitalize text-stone-500 font-medium">In-Person</span>
+              <span className="text-sm font-bold text-stone-900">₹2,200</span>
+            </div>
+          </Link>
+        </div>
+      </section>
+
             <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-5">
                 <div>
                     <h2 className="text-xl font-bold text-stone-900 tracking-tight">Browse by Discipline</h2>
@@ -243,6 +477,43 @@ function HomePage() {
 
             </section>
 
+            <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-5">
+                <div>
+                    <h2 className="text-xl font-bold text-stone-900 tracking-tight">Explore by Community Hub</h2>
+                    <p className="text-xs text-stone-500">Vibrant hubs where local conclaves thrive</p>
+                </div>
+
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                    {
+                        HUB_CITIES.map((c, i) => {
+                            const { name, label, img } = c;
+                            return <Link
+                                key={i}
+                                to="/explore"
+                                className="group relative rounded-2xl overflow-hidden aspect-4/3 bg-stone-900 shadow-subtle border border-[#EBE8DF]"
+                            >
+                                <img
+                                    src={img}
+                                    alt="Bengaluru"
+                                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 opacity-75"
+                                />
+                                <div className="absolute inset-0 bg-linear-to-t from-black/80 via-black/20 to-transparent" />
+                                <div className="absolute bottom-4 left-4 right-4 text-white">
+                                    <div className="flex items-center gap-1.5 text-orange-400 text-xs font-semibold">
+                                        <MapPin />
+                                        <span>{name}</span>
+                                    </div>
+                                    <p className="text-xs text-stone-300 font-medium mt-0.5">{label}</p>
+                                </div>
+                            </Link>
+                        })
+                    }
+
+
+
+                </div>
+            </section>
+
             <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 <div className="bg-[#1C1B18] text-white rounded-3xl p-8 sm:p-12 border border-[#33312B] flex flex-col lg:flex-row items-center justify-between gap-8">
                     <div className="max-w-xl space-y-3">
@@ -273,6 +544,8 @@ function HomePage() {
                     </div>
                 </div>
             </section>
+
+
 
         </div>
     )
