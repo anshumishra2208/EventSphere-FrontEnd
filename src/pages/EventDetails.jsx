@@ -12,7 +12,7 @@ const Modes = {
 };
 
 function handleShare(){
-    window.navigator.clipboard.writeText(" i m anshu mishra");
+    window.navigator.clipboard.writeText(window.location.href);
     toast.success("Event link copied to clipboard!")
 }
 
