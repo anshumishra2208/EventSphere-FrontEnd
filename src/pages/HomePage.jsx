@@ -306,7 +306,7 @@ function HomePage() {
                         ) : (
 
                             trendingEvents.map((e) => {
-                                const { _id, featured, format, city, startDate, title, venue, updatedAt, image, price, currency, createdAt, category: { name, slug } } = e
+                                const { _id,slug, featured, format, city, startDate, title, venue, updatedAt, image, price, currency, createdAt, category: { name } } = e
                                 return <Link
                                     key={_id}
                                     to={`/events/${slug}`}

@@ -16,6 +16,26 @@ export function formatPrice(amount, currency = "INR") {
 }
 
 export function formatEventDate(dateInput) {
+  if (!dateInput) {
+    return;
+  }
   const date = parseISO(dateInput);
-  return format(date , "E, LLL dd, yyyy");
+
+  return format(date, "E, LLL dd, yyyy");
+}
+
+export function formatEventTimeRange(startDate, endDate) {
+  if (!startDate || !endDate) {
+    return;
+  }
+
+  const start = parseISO(startDate);
+
+  const startTime = format(start, "h:mm a");
+
+  const end = parseISO(endDate);
+
+  const endTime = format(end, "h:mm a");
+
+  return `${startTime} - ${endTime}`;
 }
