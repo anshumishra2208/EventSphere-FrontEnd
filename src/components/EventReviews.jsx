@@ -1,8 +1,9 @@
 import { formatDistanceToNow, parseISO } from "date-fns";
 import { Star } from "lucide-react";
 
-export default function EventReviewSection({reviews}) {
+export default function EventReviewSection({reviews,averageRating,numReviews}) {
     console.log(reviews);
+    const isAuthenticated = true;
   return (
     <section className="bg-white rounded-3xl border border-[#EBE8DF] p-6 sm:p-8 shadow-subtle space-y-6">
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-6 border-b border-[#F2EFE8]">
@@ -15,19 +16,22 @@ export default function EventReviewSection({reviews}) {
 
         <div className="flex items-center gap-3">
           <div className="flex items-center gap-1 text-[#E65100]">
-            <span className="text-amber-500 text-lg">⭐</span>
+            <span className="text-amber-500 text-lg"><Star className="w-5 h-5 fill-[#E65100]"/></span>
             <span className="text-lg font-black text-stone-900">
-              {reviews?.rating}
+              {averageRating > 0 ? averageRating : "New"}
             </span>
           </div>
           <span className="text-xs text-stone-400 font-medium">
-            (3 reviews)
+            {/* {numReviews > 0 ? `${numReviews} reviews` : "New"}  */}
+            ({numReviews} reviews)
           </span>
         </div>
       </div>
 
       {/* Review Submission Form */}
-      <form className="bg-[#FAF9F5] rounded-2xl p-4 sm:p-5 border border-[#EAE7DC] space-y-4">
+      {
+        isAuthenticated? 
+        <form className="bg-[#FAF9F5] rounded-2xl p-4 sm:p-5 border border-[#EAE7DC] space-y-4">
         <div className="flex items-center justify-between flex-wrap gap-2">
           <span className="text-xs font-bold text-stone-800">Rate your experience:</span>
           <div className="flex items-center gap-1">
@@ -58,7 +62,15 @@ export default function EventReviewSection({reviews}) {
             <span>Post Review</span>
           </button>
         </div>
-      </form>
+      </form> : (
+        <div className="bg-[#FAF9F5] rounded-2xl p-4 border border-[#EAE7DC] text-center text-xs text-stone-600">
+          Want to share your review? Please
+          <span className="text-[#E65100] font-semibold"> sign in</span> to post
+          your feedback.
+        </div>
+      )
+      }
+      
 
       <div className="space-y-4">
         {/* Review 1 */}

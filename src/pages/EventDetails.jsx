@@ -1,4 +1,5 @@
 import EventReviewSection from "@/components/EventReviews";
+import api from "@/lib/axios";
 import { formatEventDate, formatEventTimeRange, formatPrice, getDaysRemaining } from "@/lib/utils";
 import axios from "axios";
 import { Bookmark, Calendar, Check, Clock, MapPin, Share2, Shield, ShieldCheck, Sparkle, Sparkles, User, User2 } from "lucide-react";
@@ -28,18 +29,15 @@ export default function EventDetailsPage() {
         async function fetchEvent() {
             setIsLoading(true);
             try {
-                let {
-                    data: { data },
-                } = await axios.get(
-                    `https://eventsphere-server-mfdb.onrender.com/api/events/${slug}`,
+
+                let data = await api.get(
+                    `/api/events/${slug}`,
                 );
                 setEvent(data);
 
                 
-                let {
-                    data: { data : reviewsData },
-                } = await axios.get(
-                    `https://eventsphere-server-mfdb.onrender.com/api/events/${data.id || data._id}/reviews`,
+                let reviewsData = await api.get(
+                    `/api/events/${data.id || data._id}/reviews`,
                 );
                 setReviews(reviewsData);
             } catch (error) {}
@@ -238,7 +236,7 @@ export default function EventDetailsPage() {
                     </section>
 
                     {/* Reviews section */}
-                    <EventReviewSection reviews={reviews}/>
+                    <EventReviewSection reviews={reviews} averageRating={event.averageRating} numReviews={event.numReviews} />
                 </div>
 
                 {/* Right Column: Sticky Booking Ticket Card */}

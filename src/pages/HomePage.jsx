@@ -6,6 +6,7 @@ import axios from 'axios';
 import FeaturedCarousel from '../components/ui/FeaturedCarousel';
 import { formatEventDate, formatPrice } from '@/lib/utils';
 import Skeleton from '@/components/Skeleton';
+import api from '@/lib/axios';
 
 function getIconComponent(category) {
     const { icon } = category;
@@ -104,7 +105,7 @@ function HomePage() {
         async function loadHomePage() {
 
             try {
-                let { data: { data } } = await axios.get("https://eventsphere-server-mfdb.onrender.com/api/events ");
+                let data = await api.get("/api/events ");
                 setFeaturedEvents(data);
 
             } catch (error) {
@@ -112,7 +113,7 @@ function HomePage() {
             }
 
             try {
-                let { data: { data } } = await axios.get("https://eventsphere-server-mfdb.onrender.com/api/categories");
+                let data = await api.get("/api/categories");
                 setCategories(data);
 
             } catch (error) {
@@ -120,7 +121,7 @@ function HomePage() {
             }
 
             try {
-                let { data: { data } } = await axios.get("https://eventsphere-server-mfdb.onrender.com/api/events?limit=8&sort=startDate&order=asc");
+                let data = await api.get("/api/events?limit=8&sort=startDate&order=asc");
                 setTrendingEvents(data);
 
             } catch (error) {
