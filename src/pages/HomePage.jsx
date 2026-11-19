@@ -7,6 +7,8 @@ import FeaturedCarousel from '../components/ui/FeaturedCarousel';
 import { formatEventDate, formatPrice } from '@/lib/utils';
 import Skeleton from '@/components/Skeleton';
 import api from '@/lib/axios';
+import { useDispatch, useSelector } from 'react-redux';
+import { toggleFavourite } from '@/store/slices/favouriteSlice';
 
 function getIconComponent(category) {
     const { icon } = category;
@@ -137,6 +139,9 @@ function HomePage() {
 
     }, [])
 
+    const dispatch = useDispatch();
+    const state = useSelector((state)=> state.favouriteSection.name);
+    
 
     return (
         <div className="space-y-16 pb-20">
@@ -301,13 +306,13 @@ function HomePage() {
                         isLoading ? (
                             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
                                 {[...Array(8)].map((_, i) => (
-                                    <Skeleton key={i}/>
+                                    <Skeleton key={i} />
                                 ))}
                             </div>
                         ) : (
 
                             trendingEvents.map((e) => {
-                                const { _id,slug, featured, format, city, startDate, title, venue, updatedAt, image, price, currency, createdAt, category: { name } } = e
+                                const { _id, slug, featured, format, city, startDate, title, venue, updatedAt, image, price, currency, createdAt, category: { name } } = e
                                 return <Link
                                     key={_id}
                                     to={`/events/${slug}`}
@@ -325,10 +330,16 @@ function HomePage() {
                                                     {`${name}`}
                                                 </span>
                                                 <button
+                                                    onClick={(e) => {
+                                                        e.preventDefault()
+                                                        dispatch(toggleFavourite("viratKohli"));
+                                                        console.log(state);
+                                                        
+                                                    }}
                                                     type="button"
                                                     className="pointer-events-auto w-8 h-8 rounded-full bg-white/90 backdrop-blur-md shadow-sm border border-black/5 flex items-center justify-center text-stone-700 text-xs"
                                                 >
-                                                    <Bookmark />
+                                                    <Bookmark /> 
                                                 </button>
                                             </div>
                                         </div>
