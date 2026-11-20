@@ -2,7 +2,6 @@ import { formatDistanceToNow, parseISO } from "date-fns";
 import { Star } from "lucide-react";
 
 export default function EventReviewSection({reviews,averageRating,numReviews}) {
-    console.log(reviews);
     const isAuthenticated = true;
   return (
     <section className="bg-white rounded-3xl border border-[#EBE8DF] p-6 sm:p-8 shadow-subtle space-y-6">
