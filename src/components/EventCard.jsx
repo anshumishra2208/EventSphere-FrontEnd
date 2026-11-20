@@ -5,6 +5,7 @@ import { useDispatch } from "react-redux";
 import { Link } from "react-router";
 
 export default function EventCard({ event }) {
+
     const {
         city,
         currency,

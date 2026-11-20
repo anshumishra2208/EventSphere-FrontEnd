@@ -7,6 +7,7 @@ import HomePage from "./pages/HomePage"
 import { useEffect, useState } from "react"
 import EventDetailsPage from "./pages/EventDetails"
 import { Toaster } from "sonner"
+import FavoritesPage from "./pages/FavouritesPage"
 
 export function GetOnTop() {
   const { pathname } = useLocation()
@@ -25,6 +26,7 @@ function App() {
       <Routes>
         <Route path="/" element={<HomePage />} />
         <Route path="/events/:slug" element={<EventDetailsPage />} />
+        <Route path="/favorites" element={<FavoritesPage/>}/>
         <Route path="*" element={<NotFound />} />
       </Routes>
       <Toaster

@@ -1,9 +1,11 @@
 import EventReviewSection from "@/components/EventReviews";
 import api from "@/lib/axios";
 import { formatEventDate, formatEventTimeRange, formatPrice, getDaysRemaining } from "@/lib/utils";
+import { toggleFavourite } from "@/store/slices/favouriteSlice";
 import axios from "axios";
 import { Bookmark, Calendar, Check, Clock, MapPin, Share2, Shield, ShieldCheck, Sparkle, Sparkles, User, User2 } from "lucide-react";
 import { useEffect, useState } from "react";
+import { useDispatch } from "react-redux";
 import { Link, useParams } from "react-router";
 import { toast } from "sonner";
 
@@ -19,6 +21,13 @@ function handleShare() {
 }
 
 export default function EventDetailsPage() {
+
+    const dispatch = useDispatch();
+    
+    function handleSave(e) {
+        e.preventDefault();
+        dispatch(toggleFavourite(event))
+    }
 
     const { slug } = useParams();
     const [isLoading, setIsLoading] = useState(false);
@@ -90,6 +99,7 @@ export default function EventDetailsPage() {
                     </button>
 
                     <button
+                    onClick={handleSave}
                         type="button"
                         className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl border text-xs font-medium transition-all cursor-pointer bg-white border-[#DDD9CE] hover:bg-stone-50 text-stone-700"
                     >

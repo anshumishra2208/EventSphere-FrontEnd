@@ -26,7 +26,7 @@ const favouriteSlice = createSlice({
 
         },
         clearFavourite(state) {
-
+            state.items = [];
         }
     }
 })
