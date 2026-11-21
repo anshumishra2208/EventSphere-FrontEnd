@@ -4,8 +4,11 @@ import { clearFavourite } from '@/store/slices/favouriteSlice';
 import { Bookmark } from 'lucide-react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router';
+import { toast } from 'sonner';
 
 export default function FavoritesPage() {
+
+    const items = useSelector((state) => state.favouriteSection.items);
 
     const dispatch = useDispatch();
     const event = useSelector((state) => {
@@ -28,8 +31,13 @@ export default function FavoritesPage() {
                 <button
                     onClick={(e) => {
                         const response = window.confirm("Do you want to clear all the events?");
-                        if (response) {
+
+                        if (response && items.length) {
                             dispatch(clearFavourite());
+                            toast.success("Saved  list cleared")
+                        }
+                        else{
+                           toast.info("Your saved list is already empty")
                         }
                     }}
                     type="button"

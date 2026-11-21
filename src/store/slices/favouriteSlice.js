@@ -3,7 +3,7 @@ import { createSlice } from "@reduxjs/toolkit";
 const favouriteSlice = createSlice({
     name: "favourites",
     initialState: {
-        items: []
+        items: JSON.parse(localStorage.getItem("event-sphere")) || []
     },
     reducers: {
         toggleFavourite(state, action) {
@@ -21,12 +21,14 @@ const favouriteSlice = createSlice({
              else {
                 state.items.push(event);
             }
+            localStorage.setItem("event-sphere" , JSON.stringify(state.items));
         },
         removeFavourite(state) {
 
         },
         clearFavourite(state) {
             state.items = [];
+            localStorage.clear();
         }
     }
 })

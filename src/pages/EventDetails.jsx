@@ -5,7 +5,7 @@ import { toggleFavourite } from "@/store/slices/favouriteSlice";
 import axios from "axios";
 import { Bookmark, Calendar, Check, Clock, MapPin, Share2, Shield, ShieldCheck, Sparkle, Sparkles, User, User2 } from "lucide-react";
 import { useEffect, useState } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Link, useParams } from "react-router";
 import { toast } from "sonner";
 
@@ -23,16 +23,30 @@ function handleShare() {
 export default function EventDetailsPage() {
 
     const dispatch = useDispatch();
+
+    const items = useSelector((state) => state.favouriteSection.items);
     
-    function handleSave(e) {
-        e.preventDefault();
-        dispatch(toggleFavourite(event))
-    }
+    
 
     const { slug } = useParams();
     const [isLoading, setIsLoading] = useState(false);
     const [event, setEvent] = useState([]);
     const [reviews,setReviews] = useState([]);
+
+    const isFavourite = items.some(
+    (e) => (e.id || e._id) === (event.id || event._id));
+
+    function handleSave(e) {
+        e.preventDefault();
+        dispatch(toggleFavourite(event))
+        if (isFavourite) {
+            toast.info(`Removed "${event?.title}" from saved events`)
+        }
+        else {
+            toast.success(`Saved "${event?.title}" to your collection!`)
+        }
+
+    }
 
     useEffect(() => {
         async function fetchEvent() {
